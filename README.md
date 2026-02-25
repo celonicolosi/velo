@@ -1,152 +1,164 @@
-# Velô Sprint - Configurador de Veículo Elétrico
+# Velô Sprint – Electric Vehicle Configurator
 
-Aplicação web em React para configuração e compra do veículo elétrico **Velô Sprint**.
+> This project uses **Yarn** as the package manager.
 
-## Sobre o Projeto
-
-Uma SPA (Single Page Application) que permite:
-- Personalizar cores, rodas e opcionais do veículo
-- Calcular preços em tempo real
-- Realizar pedidos com análise de crédito
-- Consultar status de pedidos
-
-**Especificações do Velô Sprint:** 450 km de autonomia | 0-100 km/h em 3.2s | 500 cv
+A React web application for configuring and purchasing the **Velô Sprint** electric vehicle.
 
 ---
 
-## Stack Tecnológica
+## About the Project
 
-| Categoria | Tecnologias |
-|-----------|-------------|
+This is a SPA (Single Page Application) that allows users to:
+- Customize vehicle colors, wheels, and optional features
+- Calculate pricing in real time
+- Place orders with integrated credit analysis
+- Check order status
+
+**Velô Sprint Specs:**  
+450 km range | 0–100 km/h in 3.2s | 500 hp
+
+---
+
+## Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
 | **Frontend** | React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui |
-| **Estado** | Zustand (global), React Hook Form (formulários) |
-| **Validação** | Zod |
+| **State Management** | Zustand (global state), React Hook Form (forms) |
+| **Validation** | Zod |
 | **Data Fetching** | TanStack Query |
 | **Backend** | Supabase (PostgreSQL + Edge Functions) |
 
 ---
 
-## Instalação
+## Installation
 
 ```bash
-# Instalar dependências
+# Install dependencies
 yarn install
 
-# Rodar em desenvolvimento
+# Start development server
 yarn dev
 ```
 
-Acesse: `http://localhost:5173`
+Access the app at:  
+`http://localhost:5173`
 
 ---
 
-## Configuração do Supabase
+## Supabase Setup
 
-### 1. Criar Projeto
+### 1. Create a Project
 
-1. Acesse [supabase.com](https://supabase.com) e crie uma conta
-2. Clique em **New Project**
-3. Escolha um nome e senha para o banco
-4. Aguarde a criação (~2 minutos)
+1. Go to https://supabase.com and create an account
+2. Click **New Project**
+3. Choose a project name and database password
+4. Wait for the project to be created (~2 minutes)
 
-### 2. Variáveis de Ambiente
+---
 
-Crie o arquivo `.env` na raiz do projeto:
+### 2. Environment Variables
+
+Create a `.env` file in the root of the project:
 
 ```env
-VITE_SUPABASE_PROJECT_ID="seu_project_id"
-VITE_SUPABASE_PUBLISHABLE_KEY="sua_chave_anon_publica"
-VITE_SUPABASE_URL="https://seu_project_id.supabase.co"
+VITE_SUPABASE_PROJECT_ID="your_project_id"
+VITE_SUPABASE_PUBLISHABLE_KEY="your_public_anon_key"
+VITE_SUPABASE_URL="https://your_project_id.supabase.co"
 ```
 
-> Encontre essas informações em: **Project Settings → API**
+You can find this information in:  
+**Project Settings → API**
 
-### 3. Deploy (banco + functions)
+---
+
+### 3. Deploy (Database + Edge Functions)
 
 ```bash
-# Instalar CLI
+# Install Supabase CLI (dev dependency)
 yarn add supabase -D
 
-# Login e vincular projeto
+# Login and link project
 yarn supabase login
 yarn supabase link --project-ref kibwiwpnailctpuafcin
 
-# Aplicar migrações (cria tabelas e RLS)
+# Apply migrations (creates tables and RLS policies)
 yarn supabase db push
 
-# Deploy das Edge Functions
+# Deploy Edge Functions
 yarn supabase functions deploy
 ```
 
-Pronto! O banco e as functions estarão configurados.
+Done! Your database and Edge Functions should now be configured.
 
 ---
 
-## Estrutura Principal
+## Project Structure
 
 ```
 src/
-├── pages/           # Páginas da aplicação
-├── components/      # Componentes React
-│   ├── configurator/   # Configurador do carro
+├── pages/              # Application pages
+├── components/         # React components
+│   ├── configurator/   # Vehicle configurator
 │   ├── landing/        # Landing page
-│   └── ui/             # Componentes shadcn/ui
-├── store/           # Estado global (Zustand)
-├── hooks/           # Hooks customizados
-└── integrations/    # Cliente Supabase
+│   └── ui/             # shadcn/ui components
+├── store/              # Global state (Zustand)
+├── hooks/              # Custom hooks
+└── integrations/       # Supabase client
 ```
 
 ---
 
-## Rotas
+## Routes
 
-| Rota | Descrição |
-|------|-----------|
+| Route | Description |
+|-------|------------|
 | `/` | Landing page |
-| `/configure` | Configurador do veículo |
-| `/order` | Checkout/Pedido |
-| `/success` | Confirmação do pedido |
-| `/lookup` | Consulta de pedidos |
+| `/configure` | Vehicle configurator |
+| `/order` | Checkout / Order |
+| `/success` | Order confirmation |
+| `/lookup` | Order lookup |
 
 ---
 
-## Modelo de Preços
+## Pricing Model
 
-- **Preço base:** R$ 40.000
-- **Rodas Sport:** +R$ 2.000
-- **Precision Park:** +R$ 5.500
-- **Flux Capacitor:** +R$ 5.000
-- **Financiamento:** 12x com juros de 2% a.m.
+- **Base price:** R$ 40,000
+- **Sport Wheels:** +R$ 2,000
+- **Precision Park:** +R$ 5,500
+- **Flux Capacitor:** +R$ 5,000
+- **Financing:** 12 installments with 2% monthly interest
 
 ---
 
-## Banco de Dados
+## Database
 
-**Tabela `orders`** — campos principais:
-- `order_number` — Formato: VLO-XXXXXX
-- `color`, `wheel_type`, `optionals` — Configuração
-- `customer_name`, `customer_email`, `customer_cpf` — Cliente
-- `payment_method`, `total_price` — Pagamento
+### `orders` table — main fields:
+
+- `order_number` — Format: VLO-XXXXXX
+- `color`, `wheel_type`, `optionals` — Configuration details
+- `customer_name`, `customer_email`, `customer_cpf` — Customer info
+- `payment_method`, `total_price` — Payment details
 - `status` — pending, approved, rejected, analysis
 
 ---
 
-## Análise de Crédito
+## Credit Analysis Rules
 
-| Score | Resultado |
-|-------|-----------|
-| > 700 | Aprovado |
-| 501-700 | Em análise |
-| ≤ 500 | Reprovado |
+| Score | Result |
+|-------|--------|
+| > 700 | Approved |
+| 501–700 | Under review |
+| ≤ 500 | Rejected |
 
-*Se entrada ≥ 50% do total, aprova mesmo com score < 700*
+*If the down payment is ≥ 50% of the total price, the order is approved even if the score is below 700.*
 
 ---
 
-## Fluxo Principal
+## Main Flow
 
 ```
-Landing → Configurador → Checkout → Análise de Crédito → Confirmação
+Landing → Configurator → Checkout → Credit Analysis → Confirmation
 ```
 
 ---
@@ -154,7 +166,7 @@ Landing → Configurador → Checkout → Análise de Crédito → Confirmação
 ## Scripts
 
 ```bash
-npm run dev      # Desenvolvimento
-npm run build    # Build de produção
-npm run lint     # Verificar código
+yarn dev        # Development
+yarn build      # Production build
+yarn lint       # Linting
 ```
