@@ -15,9 +15,17 @@ test('Check order status', async ({ page }) => {
   await page.getByTestId('search-order-button').click();
 
   // Assert
-  await expect(page.getByTestId('order-result-id')).toBeVisible();
-  await expect(page.getByTestId('order-result-id')).toContainText('VLO-W4MS41');
+  
+  // Keeping the original assertions for reference
+  // await expect(page.getByTestId('order-result-id')).toBeVisible();
+  // await expect(page.getByTestId('order-result-id')).toContainText('VLO-W4MS41');
 
-  await expect(page.getByTestId('order-result-status')).toBeVisible();
-  await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+  // await expect(page.getByTestId('order-result-status')).toBeVisible();
+  // await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
+
+  // Asserting scoping by the result card data-testid
+  const orderResult = page.getByTestId('order-result-VLO-W4MS41');
+
+  await expect(orderResult).toContainText('VLO-W4MS41');
+  await expect(orderResult).toContainText('APROVADO');
 });
