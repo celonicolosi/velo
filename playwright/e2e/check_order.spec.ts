@@ -3,6 +3,10 @@ import { test, expect } from '@playwright/test';
 // AAA - Arrange, Act, Assert
 
 test('Check order status', async ({ page }) => {
+// Test Data
+const order = 'VLO-W4MS41'
+
+
   // Arrange
   await page.goto('http://localhost:5173/');
   await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
@@ -11,7 +15,7 @@ test('Check order status', async ({ page }) => {
   await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
 
   // Act
-  await page.getByTestId('search-order-id').fill('VLO-W4MS41');
+  await page.getByTestId('search-order-id').fill(order);
   await page.getByTestId('search-order-button').click();
 
   // Assert
