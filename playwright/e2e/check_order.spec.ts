@@ -23,9 +23,24 @@ test('Check order status', async ({ page }) => {
   // await expect(page.getByTestId('order-result-status')).toBeVisible();
   // await expect(page.getByTestId('order-result-status')).toContainText('APROVADO');
 
-  // Asserting scoping by the result card data-testid
-  const orderResult = page.getByTestId('order-result-VLO-W4MS41');
+  // My solution for the first challenge
+  // const orderResult = page.getByTestId('order-result-VLO-W4MS41');
 
-  await expect(orderResult).toContainText('VLO-W4MS41');
-  await expect(orderResult).toContainText('APROVADO');
+  // await expect(orderResult).toContainText('VLO-W4MS41');
+  // await expect(orderResult).toContainText('APROVADO');
+
+  // Solution taught by the instructor
+
+  // First option by xpath
+  // const orderCode = page.locator('//p[text()="Pedido"]/../p[text()="VLO-W4MS41"]')
+  // await expect(orderCode).toBeVisible();
+
+  // Second option by getByRole. + filter + locator
+  const containerPedido = page.getByRole('paragraph')
+    .filter({ hasText: /^Pedido$/ })
+    .locator('..') //Go up to the parent elemtn (the div that wrap both paragraphs)
+
+  await expect(containerPedido).toContainText('VLO-W4MS41');
+  
+  await expect(page.getByText('APROVADO')). toBeVisible();
 });
