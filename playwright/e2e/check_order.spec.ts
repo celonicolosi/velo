@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { generateRandomOrderCode } from '../support/helpers/generate_random_order_code';
 
 // AAA - Arrange, Act, Assert
 
@@ -51,7 +52,7 @@ const order = 'VLO-W4MS41';
 
 test('Should show a negative feedback when order is not found', async({page}) => {
 
-  const wrongOrderNumber = "VLO-ABC123";
+  const wrongOrderNumber = generateRandomOrderCode();
 
   await page.goto('http://localhost:5173/');
   await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
