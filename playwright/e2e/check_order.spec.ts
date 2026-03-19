@@ -5,33 +5,31 @@ import { generateRandomOrderCode } from '../support/helpers/generate_random_orde
 
 test.describe('Check order status', ()=>{
 
-  test.beforeAll(async(page)=>{
-    // Before all runs once before ALL tests
-  });
+  // test.beforeAll(async ({ page }) => {
+  //   // Before all runs once before ALL tests
+  // });
 
-  test.beforeEach(async(page)=>{
+  test.beforeEach(async ({ page })=>{
     // Before each runs once before EACH test
-  });
-
-  test.afterAll(async(page)=>{
-    // After all runs once after ALL tests
-  });
-
-  test.afterEach(async(page)=>{
-    // After each runs once after EACH test
-  });
-
-  test('Should return the order when searching by order id', async ({ page }) => {
-    // Test Data
-    const order = 'VLO-W4MS41';
-    
-    
       // Arrange
       await page.goto('http://localhost:5173/');
       await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
     
       await page.getByRole('link', { name: 'Consultar Pedido' }).click();
       await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
+  });
+
+  // test.afterAll(async ({ page })=>{
+  //   // After all runs once after ALL tests
+  // });
+
+  // test.afterEach(async ({ page })=>{
+  //   // After each runs once after EACH test
+  // });
+
+  test('Should return the order when searching by order id', async ({ page }) => {
+    // Test Data
+    const order = 'VLO-W4MS41';
     
       // Act
       await page.getByTestId('search-order-id').fill(order);
@@ -71,12 +69,6 @@ test.describe('Check order status', ()=>{
     test('Should show a negative feedback when order is not found', async({page}) => {
     
       const wrongOrderNumber = generateRandomOrderCode();
-    
-      await page.goto('http://localhost:5173/');
-      await expect(page.getByTestId('hero-section').getByRole('heading')).toContainText('Velô Sprint');
-    
-      await page.getByRole('link', { name: 'Consultar Pedido'}).click();
-      await expect(page.getByRole('heading')).toContainText('Consultar Pedido');
     
       await page.getByRole('textbox', { name: 'Número do Pedido' }).fill(wrongOrderNumber);
       await page.getByRole('button', { name: 'Buscar Pedido'}).click();
