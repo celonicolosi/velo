@@ -27,12 +27,23 @@ test.describe('Check order status', ()=>{
   //   // After each runs once after EACH test
   // });
 
-  test('Should return the order when searching by order id', async ({ page }) => {
+  test('Should return an Approved order when searching by order id', async ({ page }) => {
     // Test Data
-    const order = 'VLO-W4MS41';
+    // const order = 'VLO-W4MS41';
+    const order = {
+      id: 'VLO-W4MS41',
+      status: 'APROVADO',
+      color: 'Midnight Black',
+      wheels: 'sport Wheels',
+      customer: {
+        name: 'Marcelo Nicolosi',
+        email: 'marceleza@velo.dev'
+      },
+      payment: 'À Vista'
+    }
     
       // Act
-      await page.getByTestId('search-order-id').fill(order);
+      await page.getByTestId('search-order-id').fill(order.id);
       await page.getByTestId('search-order-button').click();
     
       // Assert
@@ -66,35 +77,88 @@ test.describe('Check order status', ()=>{
       // await expect(page.getByText('APROVADO')). toBeVisible();
 
       // Approach using toMatchAriaSnapshot
-      await expect(page.getByTestId(`order-result-${order}`)).toMatchAriaSnapshot(`
+      await expect(page.getByTestId(`order-result-${order.id}`)).toMatchAriaSnapshot(`
         - img
         - paragraph: Pedido
-        - paragraph: ${order}
+        - paragraph: ${order.id}
         - img
-        - text: APROVADO
+        - text: ${order.status}
         - img "Velô Sprint"
         - paragraph: Modelo
         - paragraph: Velô Sprint
         - paragraph: Cor
-        - paragraph: Midnight Black
+        - paragraph: ${order.color}
         - paragraph: Interior
         - paragraph: cream
         - paragraph: Rodas
-        - paragraph: sport Wheels
+        - paragraph: ${order.wheels}
         - heading "Dados do Cliente" [level=4]
         - paragraph: Nome
-        - paragraph: Marcelo Nicolosi
+        - paragraph: ${order.customer.name}
         - paragraph: Email
-        - paragraph: marceleza@velo.dev
+        - paragraph: ${order.customer.email}
         - paragraph: Loja de Retirada
         - paragraph
         - paragraph: Data do Pedido
         - paragraph: /\\d+\\/\\d+\\/\\d+/
         - heading "Pagamento" [level=4]
-        - paragraph: À Vista
+        - paragraph: ${order.payment}
         - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
         `);
     });
+
+    test('Should return a Reproved order when searching by order id', async ({ page }) => {
+      // Test Data
+      // const order = 'VLO-3K4V1O';
+      const order = {
+        id: 'VLO-3K4V1O',
+        status: 'REPROVADO',
+        color: 'Lunar White',
+        wheels: 'aero Wheels',
+        customer: {
+          name: 'Diogo Porto',
+          email: 'diogo-porto85@nogueiramoura.adv.br'
+        },
+        payment: 'À Vista'
+      }
+
+      
+        // Act
+        await page.getByTestId('search-order-id').fill(order.id);
+        await page.getByTestId('search-order-button').click();
+      
+        // Assert
+
+        // Approach using toMatchAriaSnapshot
+        await expect(page.getByTestId(`order-result-${order.id}`)).toMatchAriaSnapshot(`
+          - img
+          - paragraph: Pedido
+          - paragraph: ${order.id}
+          - img
+          - text: ${order.status}
+          - img "Velô Sprint"
+          - paragraph: Modelo
+          - paragraph: Velô Sprint
+          - paragraph: Cor
+          - paragraph: ${order.color}
+          - paragraph: Interior
+          - paragraph: cream
+          - paragraph: Rodas
+          - paragraph: ${order.wheels}
+          - heading "Dados do Cliente" [level=4]
+          - paragraph: Nome
+          - paragraph: ${order.customer.name}
+          - paragraph: Email
+          - paragraph: ${order.customer.email}
+          - paragraph: Loja de Retirada
+          - paragraph
+          - paragraph: Data do Pedido
+          - paragraph: /\\d+\\/\\d+\\/\\d+/
+          - heading "Pagamento" [level=4]
+          - paragraph: ${order.payment}
+          - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+        `);
+      });
     
     test('Should show a negative feedback when order is not found', async({page}) => {
     
