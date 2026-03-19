@@ -3,7 +3,7 @@ import { generateRandomOrderCode } from '../support/helpers/generate_random_orde
 
 // AAA - Arrange, Act, Assert
 
-test.describe('Check order status', (page)=>{
+test.describe('Check order status', ()=>{
   test('Should return the order when searching by order id', async ({ page }) => {
     // Test Data
     const order = 'VLO-W4MS41';
