@@ -4,6 +4,23 @@ import { generateRandomOrderCode } from '../support/helpers/generate_random_orde
 // AAA - Arrange, Act, Assert
 
 test.describe('Check order status', ()=>{
+
+  test.beforeAll(async(page)=>{
+    // Before all runs once before ALL tests
+  });
+
+  test.beforeEach(async(page)=>{
+    // Before each runs once before EACH test
+  });
+
+  test.afterAll(async(page)=>{
+    // After all runs once after ALL tests
+  });
+
+  test.afterEach(async(page)=>{
+    // After each runs once after EACH test
+  });
+
   test('Should return the order when searching by order id', async ({ page }) => {
     // Test Data
     const order = 'VLO-W4MS41';
