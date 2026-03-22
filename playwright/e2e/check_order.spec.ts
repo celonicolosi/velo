@@ -159,6 +159,58 @@ test.describe('Check order status', ()=>{
           - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
         `);
       });
+
+      test('Should return a Em Analise when searching by order id', async ({ page }) => {
+        // Test Data
+        const order = {
+          id: 'VLO-7IW1YM',
+          status: 'EM_ANALISE',
+          color: 'Lunar White',
+          wheels: 'aero Wheels',
+          customer: {
+            name: 'Lorena Sara Marlene Moreira',
+            email: 'lorena_sara_moreira@capua.com.br'
+          },
+          payment: 'À Vista'
+        }
+  
+        
+          // Act
+          await page.getByTestId('search-order-id').fill(order.id);
+          await page.getByTestId('search-order-button').click();
+        
+          // Assert
+  
+          // Approach using toMatchAriaSnapshot
+          await expect(page.getByTestId(`order-result-${order.id}`)).toMatchAriaSnapshot(`
+            - img
+            - paragraph: Pedido
+            - paragraph: ${order.id}
+            - img
+            - text: ${order.status}
+            - img "Velô Sprint"
+            - paragraph: Modelo
+            - paragraph: Velô Sprint
+            - paragraph: Cor
+            - paragraph: ${order.color}
+            - paragraph: Interior
+            - paragraph: cream
+            - paragraph: Rodas
+            - paragraph: ${order.wheels}
+            - heading "Dados do Cliente" [level=4]
+            - paragraph: Nome
+            - paragraph: ${order.customer.name}
+            - paragraph: Email
+            - paragraph: ${order.customer.email}
+            - paragraph: Loja de Retirada
+            - paragraph
+            - paragraph: Data do Pedido
+            - paragraph: /\\d+\\/\\d+\\/\\d+/
+            - heading "Pagamento" [level=4]
+            - paragraph: ${order.payment}
+            - paragraph: /R\\$ \\d+\\.\\d+,\\d+/
+          `);
+        });
     
     test('Should show a negative feedback when order is not found', async({page}) => {
     
